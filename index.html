@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glass Login UI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Outfit', sans-serif;
+  background: #0d0d1a;
+  overflow: hidden;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg,#0d0d2b,#2d1b4e,#f0a06a);
+}
+
+.card {
+  width: 360px;
+  padding: 35px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  position: relative;
+  z-index: 10;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input {
+  position: relative;
+  margin: 12px 0;
+}
+
+.input input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
+  color: white;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.login-btn {
+  background: linear-gradient(135deg,#7c3aed,#3b82f6);
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.15);
+  padding: 10px 20px;
+  border-radius: 30px;
+  opacity: 0;
+  transition: 0.3s;
+  color: white;
+}
+
+.toast.show {
+  opacity: 1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="card">
+
+  <h2>Login</h2>
+
+  <div class="input">
+    <input id="username" type="text" placeholder="NAME">
+  </div>
+
+  <div class="input">
+    <input id="password" type="password" placeholder="PASSWORD">
+  </div>
+
+  <button class="login-btn" onclick="login()">
+    Login
+  </button>
+
+  <button class="secondary-btn">
+    <a href="https://at397988-dev.github.io/created-/" style="color:white;text-decoration:none;">
+      Create Account
+    </a>
+  </button>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+/* Toast Function */
+
+function toast(msg){
+
+  const t =
+  document.getElementById("toast");
+
+  t.textContent = msg;
+
+  t.classList.add("show");
+
+  setTimeout(()=>{
+
+    t.classList.remove("show");
+
+  },2000);
+
+}
+
+/* Login Function */
+
+function login(){
+
+  const name =
+  document
+  .getElementById("username")
+  .value
+  .trim();
+
+  const pass =
+  document
+  .getElementById("password")
+  .value
+  .trim();
+
+  /* Empty Check */
+
+  if(!name || !pass){
+
+    toast(
+      "⚠️ Please fill in all fields."
+    );
+
+    return;
+  }
+
+  toast("⏳ Checking...");
+
+  /* Fetch API */
+
+  fetch(
+    "https://sheetdb.io/api/v1/x3mqc5d3c7d88"
+  )
+
+  .then(res => res.json())
+
+  .then(data => {
+
+    console.log(data);
+
+    /* Match User */
+
+    const user = data.find(item =>
+
+      item.NAME === name &&
+      item.PASSWORD === pass
+
+    );
+
+    /* Success */
+
+    if(user){
+
+      toast("✅ Login successful");
+
+      setTimeout(()=>{
+
+        window.location.href =
+        "https://at397988-dev.github.io/Time/";
+
+      },800);
+
+    }
+
+    /* Failed */
+
+    else{
+
+      toast(
+        "❌ Name or password is incorrect"
+      );
+
+    }
+
+  })
+
+  .catch(err => {
+
+    console.log(err);
+
+    toast("❌ API error");
+
+  });
+
+}
+
+</script>
+
+</body>
+</html>
